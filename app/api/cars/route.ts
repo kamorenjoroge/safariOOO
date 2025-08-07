@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import cloudinary from '@/lib/cloudinary';
 import dbConnect from '@/lib/dbConnect';
 import { Car } from '@/models/cars';
+import { Category } from '@/models/categories';
 
 export async function POST(request: Request) {
   try {
@@ -45,6 +46,15 @@ export async function POST(request: Request) {
       return NextResponse.json({
         success: false,
         error: 'Missing required fields'
+      }, { status: 400 });
+    }
+
+    // Validate category exists
+    const categoryExists = await Category.findById(type);
+    if (!categoryExists) {
+      return NextResponse.json({
+        success: false,
+        error: 'Invalid category selected'
       }, { status: 400 });
     }
 
@@ -106,8 +116,9 @@ export async function POST(request: Request) {
 export async function GET() {
   try {
     await dbConnect();
+    
     const cars = await Car.find()
-      .populate('type', 'title') // Populate category title
+      .populate('type', 'title') // Populate category title - Category model is used here
       .sort({ createdAt: -1 })
       .lean();
 
