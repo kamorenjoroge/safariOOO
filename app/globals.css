@@ -1,26 +1,43 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* Primary colors (adjusted to maintain safari green feel) */
+  --color-primary: #2e7d32;  /* Kenyan safari green */
+  --color-primary-light: #4caf50;  /* Lighter green */
+  --color-primary-dark: #1b5e20;  /* Darker green */
+  --color-primary-glow: #3e6e3c;  /* Soft glow effect */
+  
+  /* Secondary colors (warm earth tones) */
+  --color-secondary: #f5ebe0;  /* Warm cream */
+  --color-secondary-dark: #e3d5ca;  /* Darker cream */
+  
+  /* Accent colors */
+  --color-accent: #fb8c00;  /* Warm orange */
+  --color-accent-light: #ffb74d;  /* Lighter orange */
+  
+  /* Earth tones */
+  --color-earth: #6d4c41;  /* Earth brown */
+  --color-earth-light: #8d6e63;  /* Lighter brown */
+  
+  /* Status colors */
+  --color-success: #28a745;
+  --color-info: #17a2b8;
+  --color-warning: #ffc107;
+  --color-danger: #dc3545;
+  
+  /* Neutral colors */
+  --color-light: #FFFFFF;
+  --color-dark: #1C1C1C;
+  
+  /* Car status specific colors */
+  --color-available: #28a745;
+  --color-booked: #fd7e14;
+  --color-maintenance: #17a2b8;
+  --color-unavailable: #dc3545;
+  
+  /* Additional design tokens */
+  --radius-default: 0.5rem;
+  --shadow-default: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-primary: 0 10px 30px -10px rgba(46, 125, 50, 0.2);
+  --transition-default: all 0.3s ease;
 }
