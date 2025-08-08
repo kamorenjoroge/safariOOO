@@ -32,7 +32,7 @@ const navigationItems = [
     icon: Users,
     subItems: [
       { name: 'Customers', href: '/d/users', icon: CarTaxiFront },
-      { name: 'Car Owners', href: '/d/owners', icon: CarFront },
+      { name: 'Car Owners', href: '/d/investor', icon: CarFront },
     ]
   },
   { name: 'Messages', href: '/d/messages', icon: MessageCircle },

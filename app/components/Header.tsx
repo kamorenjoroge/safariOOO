@@ -22,7 +22,7 @@ const getPageTitle = (pathname: string) => {
     "/d/category": "Car Categories",
     "/d/bookings": "Bookings",
     "/d/users": "Customers",
-    "/d/owners": "Car Owners",
+    "/d/investor": "Car Owners",
     "/d/messages": "Messages",
     "/d/test": "Test wewewe love dear",
   };
