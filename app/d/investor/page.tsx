@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Image from "next/image";
 import InvestorModal from "@/app/components/modals/InvestorModal";
@@ -363,7 +363,7 @@ export default function Investors() {
               </thead>
               <tbody className="divide-y divide-secondary-dark">
                 {currentInvestors.map((investor) => (
-                  <>
+                   <React.Fragment key={investor._id}>
                     <tr key={investor._id} className="hover:bg-secondary/50 transition-colors">
                       <td className="py-4 px-6">
                         <div className="flex items-center gap-3">
@@ -523,7 +523,7 @@ export default function Investors() {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </React.Fragment>
                 ))}
               </tbody>
             </table>
