@@ -287,7 +287,7 @@ export default function Bookings() {
                       <td className="px-4 py-4">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-primary-light rounded-full flex items-center justify-center">
-                            <User className="w-4 h-4 text-primary" />
+                            <User className="w-4 h-4 text-light" />
                           </div>
                           <div>
                             <div className="font-medium text-earth">{booking.customerInfo.fullName}</div>
