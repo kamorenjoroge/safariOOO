@@ -156,7 +156,7 @@ export default function Bookings() {
 
   // Format date range for schedule
   const formatScheduleDate = (dateArray: string[]) => {
-    if (!dateArray || dateArray.length === 0) return "No dates";
+    if (!dateArray || !Array.isArray(dateArray) || dateArray.length === 0) return "No dates";
     
     // Sort dates to ensure proper order
     const sortedDates = dateArray.map(date => new Date(date)).sort((a, b) => a.getTime() - b.getTime());
@@ -181,7 +181,7 @@ export default function Bookings() {
   // Calculate rental duration - simply count the array length
   const calculateRentalDays = (dateArray: string[]) => {
     // The array length IS the number of booking days
-    return dateArray ? dateArray.length : 0;
+    return dateArray && Array.isArray(dateArray) ? dateArray.length : 0;
   };
 
   return (
@@ -219,6 +219,8 @@ export default function Bookings() {
           <div className="relative flex-1">
             <SearchCheckIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 text-earth-light w-4 h-4" />
             <input
+              id="booking-search"
+              name="booking-search"
               placeholder="Search by customer name, email, booking ID, or car..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -228,6 +230,8 @@ export default function Bookings() {
           </div>
 
           <select
+            id="status-filter"
+            name="status-filter"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
             className="px-4 py-2 border border-secondary-dark rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
@@ -287,7 +291,7 @@ export default function Bookings() {
                       <td className="px-4 py-4">
                         <div className="flex items-center space-x-3">
                           <div className="w-8 h-8 bg-primary-light rounded-full flex items-center justify-center">
-                            <User className="w-4 h-4 text-light" />
+                            <User className="w-4 h-4 text-primary" />
                           </div>
                           <div>
                             <div className="font-medium text-earth">{booking.customerInfo.fullName}</div>
@@ -323,7 +327,7 @@ export default function Bookings() {
                           KES {booking.totalAmount.toLocaleString()}
                         </div>
                         <div className="text-xs text-earth/70">
-                          {booking.schedule.length > 0 && booking.schedule[0].date.length > 0
+                          {booking.schedule && booking.schedule.length > 0 && Array.isArray(booking.schedule[0].date) && booking.schedule[0].date.length > 0
                             ? `${calculateRentalDays(booking.schedule[0].date)} days`
                             : 'Duration N/A'
                           }
@@ -433,28 +437,37 @@ export default function Bookings() {
                                 Schedule Details
                               </h4>
                               <div className="space-y-2">
-                                {booking.schedule.map((schedule, index) => (
-                                  <div key={schedule._id || schedule.id || `schedule-${index}`} className="p-3 bg-light rounded-lg border">
-                                    <div className="flex items-center justify-between mb-2">
-                                      <span className="text-sm font-medium text-earth">
-                                        Schedule {index + 1}
-                                      </span>
-                                      <span className={`px-2 py-1 text-xs rounded-full ${
-                                        schedule.available 
-                                          ? 'bg-green-100 text-green-800' 
-                                          : 'bg-red-100 text-red-800'
-                                      }`}>
-                                        {schedule.available ? 'Available' : 'Unavailable'}
-                                      </span>
-                                    </div>
-                                    <div className="text-sm text-earth/70">
-                                      <strong>Booking dates:</strong> {formatScheduleDate(schedule.date)}
-                                    </div>
-                                    <div className="text-xs text-earth/60 mt-1">
-                                      Total days: {calculateRentalDays(schedule.date)} days
-                                    </div>
-                                  </div>
-                                ))}
+                                {booking.schedule && Array.isArray(booking.schedule) 
+                                  ? booking.schedule.map((schedule, index) => (
+                                      <div key={schedule._id || schedule.id || `schedule-${index}`} className="p-3 bg-light rounded-lg border">
+                                        <div className="flex items-center justify-between mb-2">
+                                          <span className="text-sm font-medium text-earth">
+                                            Schedule {index + 1}
+                                          </span>
+                                          <span className={`px-2 py-1 text-xs rounded-full ${
+                                            schedule.available 
+                                              ? 'bg-green-100 text-green-800' 
+                                              : 'bg-red-100 text-red-800'
+                                          }`}>
+                                            {schedule.available ? 'Available' : 'Unavailable'}
+                                          </span>
+                                        </div>
+                                        <div className="text-sm text-earth/70">
+                                          <strong>Booking dates:</strong> {formatScheduleDate(schedule.date)}
+                                        </div>
+                                        <div className="text-xs text-earth/60 mt-1">
+                                          Total days: {calculateRentalDays(schedule.date)} days
+                                        </div>
+                                      </div>
+                                    ))
+                                  : (
+                                      <div className="p-3 bg-light rounded-lg border">
+                                        <div className="text-sm text-earth/70">
+                                          No schedule information available
+                                        </div>
+                                      </div>
+                                    )
+                                }
                               </div>
                             </div>
 
