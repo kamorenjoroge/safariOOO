@@ -83,14 +83,20 @@ const BookingModal: React.FC<BookingModalProps> = ({
     
     try {
       setIsLoading(true);
-      const res = await fetch(`/api/booking/${id}`, { 
-        method: "PATCH",
+      
+      // Use single endpoint with different body for complete action
+      const endpoint = `/api/booking/${id}`;
+      const method = "PATCH";
+      const body = type === "complete" 
+        ? { action: "complete" } // Use action parameter for complete
+        : { status: statusMap[type] };
+      
+      const res = await fetch(endpoint, { 
+        method,
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          status: statusMap[type] 
-        })
+        body: JSON.stringify(body)
       });
       
       if (res.ok) {
@@ -128,6 +134,19 @@ const BookingModal: React.FC<BookingModalProps> = ({
       case "cancel": return "bg-red-600 hover:bg-red-700";
       case "complete": return "bg-blue-600 hover:bg-blue-700";
       default: return "bg-gray-600 hover:bg-gray-700";
+    }
+  };
+
+  const getActionDescription = (actionType: BookingActionType) => {
+    switch (actionType) {
+      case "confirm": 
+        return "This will confirm the booking and notify the customer.";
+      case "cancel": 
+        return "This will cancel the booking and make the dates available again.";
+      case "complete": 
+        return "This will mark the booking as completed and update the car's availability schedule.";
+      default: 
+        return "";
     }
   };
 
@@ -178,13 +197,17 @@ const BookingModal: React.FC<BookingModalProps> = ({
                   {React.cloneElement(iconMap[type], { className: "h-8 w-8 stroke-[2.5]" })}
                 </div>
                 
-                <div className="space-y-2">
+                <div className="space-y-3">
                   <p className="text-lg font-medium text-dark">
                     Are you sure you want to {actionTextMap[type]} this booking?
                   </p>
                   
+                  <p className="text-sm text-gray-600">
+                    {getActionDescription(type)}
+                  </p>
+                  
                   {data && (
-                    <div className="text-sm text-gray-600 space-y-1">
+                    <div className="text-sm text-gray-600 space-y-1 bg-gray-50 p-3 rounded-lg">
                       {data.customerName && (
                         <p>Customer: <strong>{data.customerName}</strong></p>
                       )}
@@ -205,15 +228,23 @@ const BookingModal: React.FC<BookingModalProps> = ({
                   <button
                     onClick={() => setOpen(false)}
                     className="flex-1 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 text-dark"
+                    disabled={isLoading}
                   >
                     Cancel
                   </button>
                   <button
                     onClick={handleStatusUpdate}
                     disabled={isLoading}
-                    className={`flex-1 px-6 py-2 text-white rounded-lg disabled:opacity-70 ${getActionButtonColor(type)}`}
+                    className={`flex-1 px-6 py-2 text-white rounded-lg disabled:opacity-70 disabled:cursor-not-allowed ${getActionButtonColor(type)}`}
                   >
-                    {isLoading ? "Updating..." : `${actionTextMap[type].charAt(0).toUpperCase() + actionTextMap[type].slice(1)} Booking`}
+                    {isLoading ? (
+                      <div className="flex items-center justify-center gap-2">
+                        <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        {type === "complete" ? "Completing..." : "Updating..."}
+                      </div>
+                    ) : (
+                      `${actionTextMap[type].charAt(0).toUpperCase() + actionTextMap[type].slice(1)} Booking`
+                    )}
                   </button>
                 </div>
               </div>
