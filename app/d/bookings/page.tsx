@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, ChevronUp, Loader2, AlertCircle, RefreshCw, Search, Clock, XCircle, CheckCircleIcon } from 'lucide-react';
 import axios from 'axios';
 
-import BookingModal from '../../components/modals/BookingModal'; // Import your BookingModal component
+import BookingModal from '../../../components/modals/BookingModal'; // Updated path for page component
 
 // Type definitions
 interface CustomerInfo {
@@ -529,4 +529,13 @@ const BookingsTable: React.FC<BookingsTableProps> = ({
   );
 };
 
-export default BookingsTable;
+// This is the actual page component that Next.js expects
+const BookingsPage: React.FC = () => {
+  return (
+    <div className="container mx-auto px-4 py-8">
+      <BookingsTable />
+    </div>
+  );
+};
+
+export default BookingsPage;
