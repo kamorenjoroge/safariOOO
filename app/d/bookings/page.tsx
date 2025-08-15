@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { ChevronDown, ChevronUp, Loader2, AlertCircle, RefreshCw, Search, Clock, XCircle, CheckCircleIcon } from 'lucide-react';
 import axios from 'axios';
 
-import BookingModal from '../../../components/modals/BookingModal'; // Updated path for page component
+import BookingModal from '@/app/components/modals/BookingModal'; // Updated path for page component
 
 // Type definitions
 interface CustomerInfo {
